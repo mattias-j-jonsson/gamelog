@@ -17,6 +17,13 @@ struct Game {
 typedef struct Game game_t;
 
 
+// filter values
+#define NO_FILTER 0
+#define BOOKS 1
+#define GAMES 2
+#define SWITCH 3
+#define PS4 4
+
 class LLGames {
 private:
 
@@ -46,9 +53,9 @@ private:
     };
 
     Node* first;
-    int size;
+    size_t size;
     // For formatting
-    unsigned int longestName;
+    int longestName;
     static const unsigned int longestPlatform = 6;
     static const std::string TEXTFILE;
     std::fstream textFile_rw;
@@ -56,6 +63,7 @@ private:
     bool parseDate(std::string date, int numberDate[]);
     bool isPlatform(std::string input);
     std::string gameAsStr(Node* game);
+    bool checkFilter(int filter, std::string currentPlatform);
 
 public:
     class GLIterator {
@@ -71,6 +79,7 @@ public:
     std::string removeGame(int index);
     int getSize() {return size;};
     void printList(bool numbered = false);
+    void printFiltered(int filter = NO_FILTER);
     void printToFile(std::string filename = TEXTFILE);
     void loadFromFile(std::string filename = TEXTFILE);
     void clearList();

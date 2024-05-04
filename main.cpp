@@ -20,8 +20,17 @@ void printMenu() {
     std::cout << "4. Load list" << std::endl;
     std::cout << "5. Save list" << std::endl;
     std::cout << "6. Clear list" << std::endl;
-    std::cout << "7. Quit" << std::endl;
+    std::cout << "7. Print filtered" << std::endl;
+    std::cout << "8. Quit" << std::endl;
 }
+
+void printFilterMenu() {
+    std::cout << "1. Print books" << std::endl;
+    std::cout << "2. Print games" << std::endl;
+    std::cout << "3. Print switch games" << std::endl;
+    std::cout << "4. Print PS4 games" << std::endl;
+}
+
 
 int main(int argc, char const *argv[]) {
     LLGames defaultList;
@@ -31,6 +40,8 @@ int main(int argc, char const *argv[]) {
     std::string mainInput;
     int menuInput;
     std::string nameInput, platformInput, dateInput;
+    int filter = 0; // for filtering print list
+
 
     bool running = true;
 
@@ -43,6 +54,7 @@ int main(int argc, char const *argv[]) {
         menuSleep();
         try {
             menuInput = std::stoi(mainInput);
+            mainInput.clear();
         } catch(std::invalid_argument& error) {
             std::cout << "Input could not be parsed. Try again." << std::endl;
             continue;
@@ -127,6 +139,34 @@ int main(int argc, char const *argv[]) {
                 }
                 break;
             case 7:
+                // print filtered
+                printFilterMenu();
+                std::cout << std::endl << "input: ";
+                std::getline(std::cin, mainInput);
+                try {
+                    menuInput = std::stoi(mainInput);
+                    mainInput.clear();
+                } catch(std::invalid_argument& error) {
+                    std::cout << "Input could not be parsed. Try again." << std::endl;
+                    continue;
+                }
+                if (menuInput == 1)
+                {
+                    filter = BOOKS;
+                } else if (menuInput == 2) {
+                    filter = GAMES;
+                } else if (menuInput == 3) {
+                    filter = SWITCH;
+                } else if (menuInput == 4) {
+                    filter = PS4;
+                }                
+                else {
+                    std::cout << "wrong input" << std::endl;
+                }
+                
+                defaultList.printFiltered(filter);
+                break;
+            case 8:
                 // quit
                 std::cout << "Would you like to save list? (y/n) ";
                 std::getline(std::cin, mainInput);

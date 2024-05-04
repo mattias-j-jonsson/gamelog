@@ -231,15 +231,56 @@ void LLGames::printList(bool numbered) {
     int tabLength = this->longestName + PRINT_TABLENGTH;
     Node* current = first;
     if(numbered) {
-        for (int i = 0; i < this->size; i++) {
+        for (size_t i = 0; i < this->size; i++) {
             std::cout << std::to_string(i+1) << getSpacing(PRINT_TABLENGTH) << current->getName() << getSpacing(tabLength-lengthOfName(current->getName())) << current->getPlatform() << getSpacing(longestPlatform+PRINT_TABLENGTH-current->getPlatform().length()) << current->dateToStr() << std::endl;
             current = current->getNext();
         }
     } else {
-        for (int i = 0; i < this->size; i++) {
+        for (size_t i = 0; i < this->size; i++) {
             std::cout << current->getName() << getSpacing(tabLength-lengthOfName(current->getName())) << current->getPlatform() << getSpacing(longestPlatform+PRINT_TABLENGTH-current->getPlatform().length()) << current->dateToStr() << std::endl;
             current = current->getNext();
         }
+    }
+}
+
+bool LLGames::checkFilter(int filter, std::string currentPlatform) {
+    if (filter == NO_FILTER)
+    {
+        return true;
+    } else if (filter == BOOKS && currentPlatform == "BOOK")
+    {
+        return true;
+    } else if (filter == GAMES && (currentPlatform == "PS4" || currentPlatform == "SWITCH"))
+    {
+        return true;
+    } else if (filter == SWITCH && currentPlatform == "SWITCH")
+    {
+        return true;
+    } else if (filter == PS4 && currentPlatform == "PS4")
+    {
+        return true;
+    } else
+    {
+        return false;
+    }    
+}
+
+void LLGames::printFiltered(int filter) {
+    int tabLength = this->longestName + PRINT_TABLENGTH;
+    Node* current = this->first;
+
+    if(filter == NO_FILTER) {
+        printList();
+    } else {
+        for (size_t i = 0; i < this->size; i++)
+        {
+            if (checkFilter(filter, current->getPlatform()))
+            {
+                std::cout << current->getName() << getSpacing(tabLength-lengthOfName(current->getName())) << current->getPlatform() << getSpacing(longestPlatform+PRINT_TABLENGTH-current->getPlatform().length()) << current->dateToStr() << std::endl;
+            }
+            current = current->getNext();
+        }
+        
     }
 }
 
