@@ -2,6 +2,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <filesystem>
 
 #include "gamelog.h"
 
@@ -285,6 +286,8 @@ void LLGames::printFiltered(int filter) {
 }
 
 void LLGames::printToFile(std::string filename) {
+    std::string cwd = std::filesystem::canonical("/proc/self/exe");
+    filename =  cwd.substr(0, cwd.find_last_of('/')+1) + filename;
     textFile_rw.open(filename, std::ios::out | std::ios::trunc);
     if(textFile_rw.is_open()) {
         int tabLength = this->longestName + PRINT_TABLENGTH;
@@ -307,6 +310,8 @@ bool LLGames::isPlatform(std::string input) {
 }
 
 void LLGames::loadFromFile(std::string filename) {
+    std::string cwd = std::filesystem::canonical("/proc/self/exe");
+    filename =  cwd.substr(0, cwd.find_last_of('/')+1) + filename;
     textFile_rw.open(filename, std::ios::in);
     if(textFile_rw.is_open()) {
         std::string tempInput;
